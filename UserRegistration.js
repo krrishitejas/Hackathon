@@ -1,25 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import api from './App'; // Ensure 'api' is correctly configured in './App'
 
 const UserRegistration = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState(''); // Added password state
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await api.post('/register', { username, email, password });
+      console.log('User registered successfully!');
+    } catch (error) {
+      console.error('Error registering user:', error);
+    }
+  };
+
   return (
     <Container>
       <Row className="justify-content-center">
         <Col xs={12} md={8} lg={6}>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <h2>User Registration</h2>
             <Form.Group controlId="username">
               <Form.Label>Username</Form.Label>
-              <Form.Control type="text" placeholder="Enter username" />
+              <Form.Control
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter username"
+              />
             </Form.Group>
             <Form.Group controlId="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Control
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter email"
+              />
             </Form.Group>
             <Form.Group controlId="password">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Enter password" 
-/>
+              <Form.Control
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+              />
             </Form.Group>
             <Button variant="primary" type="submit">Register</Button>
           </Form>
